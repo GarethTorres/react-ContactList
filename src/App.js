@@ -15,6 +15,7 @@ export default function App({ contacts, addContact }) {
           </tr>
         </thead>
         <tbody>
+
           {contacts.map(contact => (
             <tr key={contact.id}>
               <td>{contact.name}</td>
@@ -22,9 +23,12 @@ export default function App({ contacts, addContact }) {
               <td>{contact.website}</td>
             </tr>
           ))}
+          {/* update contents */}
+          
         </tbody>
       </table>
       <Form addContact={addContact} />
     </div>
   );
 }
+

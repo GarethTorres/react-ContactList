@@ -9,17 +9,25 @@ export default function Form({ addContact }) {
     e.preventDefault();
     if (name === '' || email === '' || website === '') {
       alert("Fields cannot be empty!");
+      // condition check
+
     } else {
       const newContact = {
-        id: Math.random(),  // temporary ID
+        // contact info update
+
+        id: Math.random(),  
+        // temporary ID
         name,
         email,
         website
+
+
       };
       addContact(newContact);
       setName('');
       setEmail('');
       setWebsite('');
+
     }
   };
 
@@ -29,22 +37,30 @@ export default function Form({ addContact }) {
       <input
         className="input"
         placeholder="Name"
+
         value={name}
         onChange={(e) => setName(e.target.value)}
+        // changes update
       />
       <input
         className="input"
         placeholder="Email"
+
         value={email}
         onChange={(e) => setEmail(e.target.value)}
+
       />
       <input
         className="input"
         placeholder="Website"
+
         value={website}
         onChange={(e) => setWebsite(e.target.value)}
+
       />
+
       <button className="btn" type="submit">Add</button>
+
     </form>
   );
 }
