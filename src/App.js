@@ -40,6 +40,12 @@ export default function App() {
     form.reset();
   };
 
+  const handleDelete = (index) => {
+    setContacts((prevContacts) =>
+      prevContacts.filter((_, contactIndex) => contactIndex !== index)
+    );
+  };
+
   return (
     <div className="container">
       <h1>Contacts</h1>
@@ -49,6 +55,7 @@ export default function App() {
             <th>Name</th>
             <th>Email</th>
             <th>Website</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -57,6 +64,14 @@ export default function App() {
               <td>{contact.name}</td>
               <td>{contact.email}</td>
               <td>{contact.website}</td>
+              <td>
+                <button
+                  className="btn-delete"
+                  onClick={() => handleDelete(index)}
+                >
+                  Delete
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>
@@ -66,7 +81,9 @@ export default function App() {
         <input className="input" placeholder="Name" />
         <input className="input" placeholder="Email" />
         <input className="input" placeholder="Website" />
-        <button className="btn" type="submit">Add</button>
+        <button className="btn" type="submit">
+          Add
+        </button>
       </form>
     </div>
   );
