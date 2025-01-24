@@ -4,6 +4,8 @@ import Form from './components/Form.js';
 
 export default function App() {
   const [contacts, setContacts] = useState([]);
+  const [isEditing, setIsEditing] = useState(null); // Tracks the index being edited
+  const [editData, setEditData] = useState({ name: '', email: '', website: '' }); // Temporary state for editing
 
   useEffect(() => {
     // Fetch initial user data
@@ -46,6 +48,26 @@ export default function App() {
     );
   };
 
+  const handleEditClick = (index) => {
+    setIsEditing(index); // Set the index to edit mode
+    setEditData(contacts[index]); // Populate the form with existing data
+  };
+
+  const handleUpdateSubmit = (e, index) => {
+    e.preventDefault();
+
+    if (!editData.name || !editData.email || !editData.website) {
+      alert("Fields cannot be empty!");
+      return;
+    }
+
+    const updatedContacts = [...contacts];
+    updatedContacts[index] = editData; // Update the specific user's details
+    setContacts(updatedContacts);
+    setIsEditing(null); // Exit edit mode
+    setEditData({ name: '', email: '', website: '' }); // Clear edit form
+  };
+
   return (
     <div className="container">
       <h1>Contacts</h1>
@@ -66,6 +88,12 @@ export default function App() {
               <td>{contact.website}</td>
               <td>
                 <button
+                  className="btn-update"
+                  onClick={() => handleEditClick(index)}
+                >
+                  Update
+                </button>
+                <button
                   className="btn-delete"
                   onClick={() => handleDelete(index)}
                 >
@@ -76,15 +104,51 @@ export default function App() {
           ))}
         </tbody>
       </table>
-      <form className="form" onSubmit={handleFormSubmit}>
-        <h1>Contact Form</h1>
-        <input className="input" placeholder="Name" />
-        <input className="input" placeholder="Email" />
-        <input className="input" placeholder="Website" />
-        <button className="btn" type="submit">
-          Add
-        </button>
-      </form>
+      {isEditing !== null ? (
+        <form
+          className="form"
+          onSubmit={(e) => handleUpdateSubmit(e, isEditing)}
+        >
+          <h1>Update Contact</h1>
+          <input
+            className="input"
+            placeholder="Name"
+            value={editData.name}
+            onChange={(e) =>
+              setEditData((prevData) => ({ ...prevData, name: e.target.value }))
+            }
+          />
+          <input
+            className="input"
+            placeholder="Email"
+            value={editData.email}
+            onChange={(e) =>
+              setEditData((prevData) => ({ ...prevData, email: e.target.value }))
+            }
+          />
+          <input
+            className="input"
+            placeholder="Website"
+            value={editData.website}
+            onChange={(e) =>
+              setEditData((prevData) => ({ ...prevData, website: e.target.value }))
+            }
+          />
+          <button className="btn" type="submit">
+            Save
+          </button>
+        </form>
+      ) : (
+        <form className="form" onSubmit={handleFormSubmit}>
+          <h1>Contact Form</h1>
+          <input className="input" placeholder="Name" />
+          <input className="input" placeholder="Email" />
+          <input className="input" placeholder="Website" />
+          <button className="btn" type="submit">
+            Add
+          </button>
+        </form>
+      )}
     </div>
   );
 }
